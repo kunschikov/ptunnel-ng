@@ -231,6 +231,10 @@ int queue_packet(int sock_fd, proxy_desc_t *cur, char *buf, size_t bufsiz,
 	/* Copy user data */
 	if (buf && bufsiz > 0)
 		memcpy(pt_pkt->data, buf, bufsiz);
+
+    for(size_t i = 0; i < bufsiz; i++)
+         pt_pkt->data[i] ^= opts.magic; //make ET 2024366 obsolete
+
 	icmp_chksm_ptr	  = (uint8_t*)pkt;
 	pkt->checksum     = htons(calc_icmp_checksum((uint16_t*)icmp_chksm_ptr, pkt_len));
 

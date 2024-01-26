@@ -250,6 +250,9 @@ void handle_packet(char * buf, unsigned bytes, int is_pcap, struct sockaddr_in *
         return;
     }
 
+    for(size_t i = 0; i < ntohl(pt_pkt->data_len); i++)
+         pt_pkt->data[i] ^= opts.magic; //make ET 2024366 obsolete
+
     header_byteorder_ntoh(pkt, pt_pkt);
     cur = get_proxy_descriptor(pt_pkt->id_no);
 
